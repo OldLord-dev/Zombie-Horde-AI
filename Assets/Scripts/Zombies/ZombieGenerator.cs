@@ -56,14 +56,6 @@ public class ZombieGenerator : MonoBehaviour
 
     private bool IsThisSpaceFree(Vector2 position)
     {
-        CircleCollider2D circle = zombiePrefab.GetComponent<CircleCollider2D>();
-        if (Physics2D.OverlapCircle(position, circle.radius) is null)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return true;
     }
 }

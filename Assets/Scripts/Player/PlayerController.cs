@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    Rigidbody2D body;
+    PlayerBody playerBody;
 
     float horizontal;
     float vertical;
 
-    public float runForce = 20.0f;
+    public float speed = 2.0f;
 
     void Start ()
     {
-        body = GetComponent<Rigidbody2D>(); 
+        playerBody = GetComponent<PlayerBody>(); 
     }
 
     void Update ()
@@ -24,6 +24,6 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {  
-        body.AddForce(new Vector2(horizontal * runForce, vertical * runForce));
+        playerBody.velocity = new Vector2(horizontal * speed, vertical * speed);
     }
 }

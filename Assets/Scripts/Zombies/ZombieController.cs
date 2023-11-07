@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class ZombieController : MonoBehaviour
 {
-    public float runForce = 20.0f;
-    Rigidbody2D corpse;
+    public float speed = 2.0f;
+    EnemyBody corpse;
 
     public Vector2 placeholderDirection;
     void Start ()
     {
-        corpse = GetComponent<Rigidbody2D>(); 
+        corpse = GetComponent<EnemyBody>(); 
     }
 
     // Update is called once per frame
@@ -21,6 +21,6 @@ public class ZombieController : MonoBehaviour
 
     private void FixedUpdate()
     {  
-        corpse.AddForce(placeholderDirection*runForce);
+        corpse.velocity = placeholderDirection*speed;
     }
 }
