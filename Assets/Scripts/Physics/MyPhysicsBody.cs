@@ -10,7 +10,6 @@ public class MyPhysicsBody : MonoBehaviour
     void Awake ()
     {
         c_collider = GetComponent<MyCollider>();
-        Debug.Log("Collider added! " + c_collider);
     }
 
     public virtual void CollisionEffect(MyPhysicsBody other)
