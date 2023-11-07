@@ -30,7 +30,9 @@ public class CollisionsLoop : MonoBehaviour
         for (int i=0; i<allEnemy.Count; i++)
         {
             //sprawdź czy nie colliduje z statycznymi obiektami
+            Debug.Log("Checking for enemy "+i);
             CheckIfCollidesWithAnyObstacle(allEnemy[i]);
+
 
             //sprawdź czy nie koliduje z najbliższymi dynamicznymi
             CheckIfCollidesWithAnyEnemy(allEnemy[i], i);
@@ -44,7 +46,8 @@ public class CollisionsLoop : MonoBehaviour
         {
             if(obstacle.c_collider.Overlaps(body.c_collider))
             {
-                body.CollisionEffect(obstacle);
+                body.CollisionEffect(body);
+                Debug.Log("Somebody "+body+" collided with "+obstacle);
             }
         }
     }
