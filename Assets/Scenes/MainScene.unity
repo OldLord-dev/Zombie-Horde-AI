@@ -607,7 +607,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zombiePrefab: {fileID: 3837665375144804324, guid: bc1f8eac52f0fb540beb6c9ff53741fc, type: 3}
-  initialNumbers: 5
+  initialNumbers: 20
 --- !u!1001 &968049027
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -987,6 +987,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d369d1409afd444986162c3877358f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allEnemy: []
 --- !u!4 &1665107320
 Transform:
   m_ObjectHideFlags: 0
