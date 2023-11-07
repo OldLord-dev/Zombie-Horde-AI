@@ -7,7 +7,7 @@ public class EnemyBody : MyPhysicsBody
     
     public Vector2 velocity;
 
-    Vector3 previous_position;
+    public Vector3 previous_position;
 
 
     void Start()
@@ -42,6 +42,7 @@ public class EnemyBody : MyPhysicsBody
 
     void PushToLastPosition()
     {
+        Debug.Log("Push to previous");
         transform.position = previous_position;
     }
 }

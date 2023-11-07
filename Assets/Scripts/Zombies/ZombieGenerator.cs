@@ -11,7 +11,7 @@ public class ZombieGenerator : MonoBehaviour
     float areaHeight;
 
 
-    void Start()
+    void Awake()
     {
         //wyciągnięcie wymiarów z skryptu do tworzenia ramki
         WallsCreator wallsCreator = FindObjectsOfType<WallsCreator>()[0].GetComponent<WallsCreator>();
@@ -47,6 +47,7 @@ public class ZombieGenerator : MonoBehaviour
         {
             GameObject zombie = Instantiate(zombiePrefab, randomPosition, Quaternion.identity, transform);
             zombie.GetComponent<ZombieController>().placeholderDirection = new Vector2(Random.Range(-1, 1), Random.Range(-1, 1));
+            zombie.GetComponent<EnemyBody>().previous_position = randomPosition;
             //nadaj losową szybkość
             return true;
         }

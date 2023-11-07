@@ -7,7 +7,7 @@ public class CollisionsLoop : MonoBehaviour
 {
     StaticObstacle[] allObstacles;
     PlayerBody onlyPlayer;
-    List<EnemyBody> allEnemy;
+    public List<EnemyBody> allEnemy;
 
     void Start()
     {
@@ -30,7 +30,7 @@ public class CollisionsLoop : MonoBehaviour
         for (int i=0; i<allEnemy.Count; i++)
         {
             //sprawdź czy nie colliduje z statycznymi obiektami
-            Debug.Log("Checking for enemy "+i);
+            //Debug.Log("Checking for enemy "+i);
             CheckIfCollidesWithAnyObstacle(allEnemy[i]);
 
 
@@ -46,8 +46,8 @@ public class CollisionsLoop : MonoBehaviour
         {
             if(obstacle.c_collider.Overlaps(body.c_collider))
             {
-                body.CollisionEffect(body);
-                Debug.Log("Somebody "+body+" collided with "+obstacle);
+                body.CollisionEffect(obstacle);
+                Debug.Log("Somebody " + body +" collided with " + obstacle);
             }
         }
     }
@@ -57,12 +57,13 @@ public class CollisionsLoop : MonoBehaviour
         //no Enemy should be deleted during this loop, so no deletion during collision effect
         for (int i=0; i<allEnemy.Count; i++)
         {   
-            if (index_self>=0 && index_self==i)
+            if (index_self>=0 && index_self!=i)
             {
                 EnemyBody enemy = allEnemy[i];
                 if(enemy.c_collider.Overlaps(anybody.c_collider))
                 {
                     anybody.CollisionEffect(enemy);
+                    //Debug.Log("Somebody " + body +" collided with " + enemy);
                 }
             }
         }
