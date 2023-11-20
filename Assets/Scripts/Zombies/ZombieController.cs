@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class ZombieController : MonoBehaviour
 {
+    SteeringBehaviors steeringBehaviors;
     public float speed = 2.0f;
     EnemyBody corpse;
 
     public Vector2 placeholderDirection;
     void Start ()
     {
-        corpse = GetComponent<EnemyBody>(); 
+        corpse = GetComponent<EnemyBody>();
+        steeringBehaviors = GetComponent<SteeringBehaviors>();
     }
 
     // Update is called once per frame
@@ -21,6 +23,6 @@ public class ZombieController : MonoBehaviour
 
     private void FixedUpdate()
     {  
-        corpse.velocity = placeholderDirection*speed;
+        corpse.velocity = steeringBehaviors.Wander() * speed;
     }
 }
