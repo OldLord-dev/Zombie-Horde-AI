@@ -467,7 +467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5792dc3a4abac84db43a6b44fc4a680, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  speed: 10
 --- !u!212 &694236895
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -607,7 +607,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zombiePrefab: {fileID: 3837665375144804324, guid: bc1f8eac52f0fb540beb6c9ff53741fc, type: 3}
-  initialNumbers: 20
+  initialNumbers: 5
 --- !u!1001 &968049027
 PrefabInstance:
   m_ObjectHideFlags: 0

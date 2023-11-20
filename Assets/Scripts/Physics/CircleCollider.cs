@@ -9,6 +9,7 @@ public class CircleCollider: MyCollider
     public void Start()
     {
         c_radius = transform.localScale.x/2;
+        Debug.Log(c_radius);
     }
 
     public override bool Overlaps(MyCollider other)

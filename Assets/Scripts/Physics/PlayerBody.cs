@@ -21,6 +21,11 @@ public class PlayerBody : MyPhysicsBody
         previous_position = transform.position;
         Vector3 deltaPosition = velocity*Time.deltaTime;
         transform.position += deltaPosition;
+        if (velocity != Vector2.zero) 
+        {
+            float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg + 90.0f;
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        }
     }
     
     public override void  CollisionEffect(MyPhysicsBody otherBody)
