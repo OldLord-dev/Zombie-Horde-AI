@@ -5,16 +5,16 @@ using UnityEngine;
 
 public class CollisionsLoop : MonoBehaviour
 {
-    MyPhysicsBody[] allObstacles;
+    StaticObstacle[] allObstacles;
     PlayerBody onlyPlayer;
-    MyPhysicsBody[] allFeelers;
+    FeelerBody[] allFeelers;
     public List<EnemyBody> allEnemy;
 
     void Start()
     {
-        //allObstacles = (StaticObstacle[])FindObjectsOfType(typeof(StaticObstacle));
+        allObstacles = (StaticObstacle[])FindObjectsOfType(typeof(StaticObstacle));
         allEnemy = ((EnemyBody[])FindObjectsOfType(typeof(EnemyBody))).ToList();
-        //allFeelers = ((EnemyBody[])FindObjectsOfType(typeof(EnemyBody))).ToList();;
+        allFeelers = ((FeelerBody[])FindObjectsOfType(typeof(FeelerBody)));;
         onlyPlayer = (PlayerBody)FindObjectOfType(typeof(PlayerBody));
         Debug.Log(allObstacles);
         Debug.Log(allEnemy);
