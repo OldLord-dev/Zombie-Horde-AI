@@ -7,12 +7,14 @@ public class CollisionsLoop : MonoBehaviour
 {
     StaticObstacle[] allObstacles;
     PlayerBody onlyPlayer;
+    FeelerBody[] allFeelers;
     public List<EnemyBody> allEnemy;
 
     void Start()
     {
         allObstacles = (StaticObstacle[])FindObjectsOfType(typeof(StaticObstacle));
-        allEnemy = ((EnemyBody[])FindObjectsOfType(typeof(EnemyBody))).ToList();;
+        allEnemy = ((EnemyBody[])FindObjectsOfType(typeof(EnemyBody))).ToList();
+        allFeelers = ((FeelerBody[])FindObjectsOfType(typeof(FeelerBody)));;
         onlyPlayer = (PlayerBody)FindObjectOfType(typeof(PlayerBody));
         Debug.Log(allObstacles);
         Debug.Log(allEnemy);
@@ -45,7 +47,7 @@ public class CollisionsLoop : MonoBehaviour
 
     void CheckIfCollidesWithAnyObstacle(MyPhysicsBody body)
     {
-        foreach (StaticObstacle obstacle in allObstacles)
+        foreach (MyPhysicsBody obstacle in allObstacles)
         {
             if(obstacle.c_collider.Overlaps(body.c_collider))
             {
@@ -77,6 +79,18 @@ public class CollisionsLoop : MonoBehaviour
         if(onlyPlayer.c_collider.Overlaps(anybody.c_collider))
         {
             anybody.CollisionEffect(onlyPlayer);
+        }
+    }
+
+    void CheckFeelers(MyPhysicsBody body)
+    {
+        foreach (StaticObstacle obstacle in allObstacles)
+        {
+            if(obstacle.c_collider.Overlaps(body.c_collider))
+            {
+                body.CollisionEffect(obstacle);
+                //Debug.Log("Somebody " + body +" collided with " + obstacle);
+            }
         }
     }
 }

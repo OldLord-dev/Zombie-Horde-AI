@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+public enum ObstacleType 
+{
+    Wall, Circle
+}
 public class StaticObstacle : MyPhysicsBody
 {
-    //wydmuszka dla kolidera (można tu zaimplementować jakiś efekt kolizji dla ściany)
+    public ObstacleType type; //set in Unity
 }
