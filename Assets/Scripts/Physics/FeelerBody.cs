@@ -12,9 +12,9 @@ public class FeelerBody : MyPhysicsBody
     {
         if (otherBody is StaticObstacle obstacle)
         {
-            if(obstacle.type == ObstacleType.Wall && obstacle.c_collider is RectangleCollider wall_collider)
+            if(obstacle.c_collider is RectangleCollider rectCollider)
             {
-                (detected, closestPoint) = wall_collider.IntersectingSide(transform.parent.position, transform.position);
+                (detected, closestPoint) = rectCollider.IntersectingSide(transform.parent.position, transform.position);
                 if (!detected)
                 {
                     NoCollision();
@@ -23,6 +23,10 @@ public class FeelerBody : MyPhysicsBody
                 }
                 //policzyć Vector2 closestPoint (najbliższy feelerowi)
                 //overshoot = długość(transfomr.position - closestPoint)*normalizacja;
+            }
+            else if (obstacle.c_collider is CircleCollider circleCollider)
+            {
+                //
             }
         }
     }
