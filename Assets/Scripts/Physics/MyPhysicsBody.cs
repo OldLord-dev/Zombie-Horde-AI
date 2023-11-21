@@ -12,7 +12,7 @@ public class MyPhysicsBody : MonoBehaviour
         c_collider = GetComponent<MyCollider>();
     }
 
-    public virtual void CollisionEffect(MyPhysicsBody other)
+    public virtual void CollisionEffect(MyPhysicsBody body)
     {
         return ;
     }

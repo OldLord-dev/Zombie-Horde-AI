@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SteeringBehaviour
+public class SteeringBehaviour: MonoBehaviour
 {
     
 /*     public Vector2 Seek(){}
@@ -22,5 +22,6 @@ public class SteeringBehaviour
     public Vector2 Alignment(){}
     public Vector2 Cohesion(){}
     public Vector2 Flocking(){} */
+    
 
 }

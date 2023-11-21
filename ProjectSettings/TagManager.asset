@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Collision
+  - WallFeeler
+  - ObstacleFeeler
   layers:
   - Default
   - TransparentFX
