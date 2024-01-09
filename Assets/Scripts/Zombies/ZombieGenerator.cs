@@ -6,7 +6,7 @@ public class ZombieGenerator : MonoBehaviour
 {
     public GameObject zombiePrefab;
     public int initialNumbers;
-
+    StaticObstacle[] allObstacles;
     float areaWidth;
     float areaHeight;
 
@@ -17,6 +17,7 @@ public class ZombieGenerator : MonoBehaviour
         WallsCreator wallsCreator = FindObjectsOfType<WallsCreator>()[0].GetComponent<WallsCreator>();
         areaWidth = wallsCreator.width;
         areaHeight = wallsCreator.height;
+        allObstacles = (StaticObstacle[])FindObjectsOfType(typeof(StaticObstacle));
 
         //spawnowanie danej liczby zombie
         int zombieCounter = 0;
@@ -43,20 +44,36 @@ public class ZombieGenerator : MonoBehaviour
     {
         //Losowanie pozycji:
         Vector2 randomPosition = new Vector2(Random.Range(-areaWidth/2 + 1, areaWidth/2 -1), Random.Range(-areaHeight/2 + 1, areaHeight/2 -1));
-        if (IsThisSpaceFree(randomPosition))
-        {
             GameObject zombie = Instantiate(zombiePrefab, randomPosition, Quaternion.identity, transform);
+            bool check = IsThisSpaceFree(zombie.GetComponent<CircleCollider>());
+            int tries = 1;
+            while (!check || tries < 10)
+            {
+                randomPosition = new Vector2(Random.Range(-areaWidth/2 + 1, areaWidth/2 -1), Random.Range(-areaHeight/2 + 1, areaHeight/2 -1));
+                zombie.transform.position = randomPosition;
+                check = IsThisSpaceFree(zombie.GetComponent<CircleCollider>());
+                tries ++;
+            }
+
+
             zombie.GetComponent<ZombieController>().placeholderDirection = new Vector2(Random.Range(-1, 1), Random.Range(-1, 1));
             zombie.GetComponent<EnemyBody>().previous_position = randomPosition;
             //nadaj losową szybkość
             return true;
         }
         
-        else return false;
-    }
 
-    private bool IsThisSpaceFree(Vector2 position)
+    private bool IsThisSpaceFree(CircleCollider collider)
     {
+        foreach (MyPhysicsBody obstacle in allObstacles)
+        {
+            if(obstacle.c_collider.Overlaps(collider))
+            {
+                return false;
+                //Debug.Log("Somebody " + body +" collided with " + obstacle);
+            }          
+        }
+        
         return true;
     }
 }

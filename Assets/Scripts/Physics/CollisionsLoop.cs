@@ -5,16 +5,19 @@ using UnityEngine;
 
 public class CollisionsLoop : MonoBehaviour
 {
-    StaticObstacle[] allObstacles;
-    PlayerBody onlyPlayer;
-    FeelerBody[] allFeelers;
+    public StaticObstacle[] allObstacles;
+    public PlayerBody onlyPlayer;
+    public List<FeelerBody> allFeelers;
+    public List<DetectionBody> allDetectors;
     public List<EnemyBody> allEnemy;
+    public float neighborDistance = 3f;
 
     void Start()
     {
         allObstacles = (StaticObstacle[])FindObjectsOfType(typeof(StaticObstacle));
         allEnemy = ((EnemyBody[])FindObjectsOfType(typeof(EnemyBody))).ToList();
-        allFeelers = ((FeelerBody[])FindObjectsOfType(typeof(FeelerBody)));;
+        allFeelers = ((FeelerBody[])FindObjectsOfType(typeof(FeelerBody))).ToList();;
+        allDetectors = ((DetectionBody[])FindObjectsOfType(typeof(DetectionBody))).ToList();;
         onlyPlayer = (PlayerBody)FindObjectOfType(typeof(PlayerBody));
         Debug.Log(allObstacles);
         Debug.Log(allEnemy);
@@ -26,7 +29,7 @@ public class CollisionsLoop : MonoBehaviour
     {
         //sprawdzanie kolizji dla gracza
         CheckIfCollidesWithAnyObstacle(onlyPlayer);
-        CheckIfCollidesWithAnyEnemy(onlyPlayer);
+        CheckIfCollidesWithOrNearAnyEnemy(onlyPlayer);
 
         //sprawdzanie kolizji dla każdego przeciwnika
         for (int i=0; i<allEnemy.Count; i++)
@@ -40,9 +43,12 @@ public class CollisionsLoop : MonoBehaviour
 
 
             //sprawdź czy nie koliduje z najbliższymi dynamicznymi
-            CheckIfCollidesWithAnyEnemy(allEnemy[i], i);
+
+            allEnemy[i].ResetNeighbors();
+            CheckIfCollidesWithOrNearAnyEnemy(allEnemy[i], i);
         }
         //przejdź po wszystkich dynamicznych ciałach
+        CheckAllDetections();
     }
 
     void CheckIfCollidesWithAnyObstacle(MyPhysicsBody body)
@@ -53,23 +59,33 @@ public class CollisionsLoop : MonoBehaviour
             {
                 body.CollisionEffect(obstacle);
                 //Debug.Log("Somebody " + body +" collided with " + obstacle);
-            }
+            }          
         }
     }
 
-    void CheckIfCollidesWithAnyEnemy(MyPhysicsBody anybody, int index_self = -1)//index if checking enemy, to not check with itself
+    void CheckIfCollidesWithOrNearAnyEnemy(MyPhysicsBody anybody, int index_self = -1)//index if checking enemy, to not check with itself
     {
         //no Enemy should be deleted during this loop, so no deletion during collision effect
+
+        
         for (int i=0; i<allEnemy.Count; i++)
         {   
             if (index_self==-1 || index_self!=i)
             {
                 EnemyBody enemy = allEnemy[i];
-                if(enemy.c_collider.Overlaps(anybody.c_collider))
+                float distanceBetween = (anybody.transform.position - enemy.transform.position).magnitude;
+                if(distanceBetween < neighborDistance)
                 {
-                    anybody.CollisionEffect(enemy);
-                    Debug.Log("Somebody " + anybody +" collided with " + enemy);
+                    anybody.AddNeighbor(enemy);
+                    if(enemy.c_collider.Overlaps(anybody.c_collider))
+                    {
+                        anybody.CollisionEffect(enemy);
+                        //Debug.Log("Somebody " + anybody +" collided with " + enemy);
+                    }
                 }
+
+
+
             }
         }
     }
@@ -82,15 +98,25 @@ public class CollisionsLoop : MonoBehaviour
         }
     }
 
-    void CheckFeelers(MyPhysicsBody body)
-    {
-        foreach (StaticObstacle obstacle in allObstacles)
+    void CheckAllDetections()
+    {   
+        //Debug.Log("CheckAllFeelers");
+        foreach (FeelerBody feeler in allFeelers)
         {
-            if(obstacle.c_collider.Overlaps(body.c_collider))
-            {
-                body.CollisionEffect(obstacle);
-                //Debug.Log("Somebody " + body +" collided with " + obstacle);
-            }
+            CheckIfCollidesWithAnyObstacle(feeler);
+            //Debug.DrawLine(feeler.transform.position, feeler.transform.parent.position, Color.red);
         }
+
+        foreach (DetectionBody feeler in allDetectors)
+        {
+            feeler.Recaliber();
+            CheckIfCollidesWithAnyObstacle(feeler);
+        }
+    }
+
+
+    void TagAllEnemyNeighbors()
+    {
+
     }
 }

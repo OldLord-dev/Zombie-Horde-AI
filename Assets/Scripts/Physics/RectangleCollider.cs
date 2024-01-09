@@ -21,6 +21,10 @@ public class RectangleCollider: MyCollider
         {
             return DoesCollideWithRectangle(rectangleCollider);
         }
+        else if (other is PointCollider pointCollider)
+        {
+            return pointCollider.Overlaps(this);
+        }
         return false;
     }
 
@@ -129,18 +133,23 @@ public class RectangleCollider: MyCollider
         Vector2[] corners = new Vector2[4];
 
         // Get the local coordinates of the rectangle corners
+        //Debug.Log("c_size" + c_size.x+","+c_size.y+"; tarnsform "+ transform.position);
         Vector2[] localCorners = new Vector2[]
         {
             new Vector2(-c_size.x / 2, -c_size.y / 2),
             new Vector2(c_size.x / 2, -c_size.y / 2),
             new Vector2(c_size.x / 2, c_size.y / 2),
             new Vector2(-c_size.x / 2, c_size.y / 2)
+            
         };
-
+        
         // Transform local coordinates to world coordinates
         for (int i = 0; i < 4; i++)
         {
-            corners[i] = transform.TransformPoint(localCorners[i]);
+            corners[i] = transform.position ;
+            corners[i] += localCorners[i];
+            //Debug.Log(transform.gameObject.name + " local corner"+i+": " +localCorners[i]);
+            //Debug.Log(transform.gameObject.name + " corner"+i+": " +corners[i]);
         }
 
         for (int i = 0; i < 4; i++) //loop rectangle sides
@@ -149,7 +158,7 @@ public class RectangleCollider: MyCollider
             Vector2 p2;
             if (i==3) p2 = corners[0];
             else p2 = corners[i+1];
-
+            //Debug.Log("AreSegmentsIntersecting: side = "+p1 +"," +p2 +"  "+ AreSegmentsIntersecting(p1, p2, startpoint, endpoint));
             if (AreSegmentsIntersecting(p1, p2, startpoint, endpoint))
             {
                 Vector2[] side = {p1,p2};
@@ -159,27 +168,44 @@ public class RectangleCollider: MyCollider
         return (false, Vector2.positiveInfinity);
     }
 
-    public static bool AreSegmentsIntersecting(Vector2 A, Vector2 B, Vector2 startpoint, Vector2 endpoint)
+    public static bool AreSegmentsIntersecting(Vector2 p1, Vector2 p2, Vector2 startpoint, Vector2 endpoint)
     {
         // Calculate the direction vectors of the two line segments
-        Vector2 AB = B - A;
-        Vector2 AC = startpoint - A;
-        Vector2 AD = endpoint - A;
+        Vector2 a = p2-p1;
+        Vector2 b = startpoint - endpoint;
+        Vector2 c = p1 - startpoint;
 
-        Vector2 CD = endpoint - startpoint;
-        Vector2 CA = A - startpoint;
-        Vector2 CB = B - startpoint;
+        float alphaNumerator = b.y*c.x - b.x*c.y;
+        float alphaDenominator = a.y*b.x - a.x*b.y;
+        float betaNumerator  = a.x*c.y - a.y*c.x;
+        float betaDenominator  = a.y*b.x - a.x*b.y;
 
-        // Check for intersection using cross products
-        float crossProductABAC = Vector3.Cross(AB, AC).z;
-        float crossProductABAD = Vector3.Cross(AB, AD).z;
-
-        float crossProductCDBC = Vector3.Cross(CD, CB).z;
-        float crossProductCDCA = Vector3.Cross(CD, CA).z;
-
-        // If cross products have different signs, the segments intersect
-        return (crossProductABAC * crossProductABAD < 0) && (crossProductCDBC * crossProductCDCA < 0);
-    }
+        bool doIntersect = true;
+        if (alphaDenominator == 0 || betaDenominator == 0) {
+            doIntersect = false;
+        } 
+        else {
+        
+            if (alphaDenominator > 0) {
+                if (alphaNumerator < 0 || alphaNumerator > alphaDenominator) {
+                    doIntersect = false;
+                
+                }
+            } else if (alphaNumerator > 0 || alphaNumerator < alphaDenominator) {
+                doIntersect = false;
+            }
+        
+            if (doIntersect && betaDenominator > 0) {
+                if (betaNumerator < 0 || betaNumerator > betaDenominator) {
+                    doIntersect = false;
+                }
+            } else if (betaNumerator > 0 || betaNumerator < betaDenominator) {
+                doIntersect = false;
+            }
+        }
+ 
+    return doIntersect;
+}
 
 
     public Vector2 ClosestSidePoint(Vector2 point, Vector2[] side)
@@ -194,5 +220,11 @@ public class RectangleCollider: MyCollider
         return nearestPoint;
     }
 
+
+    public void Resize (float x, float y)
+    {
+        transform.localScale = new Vector3(x,y,1);
+        c_size = new Vector2(transform.localScale.x, transform.localScale.y);
+    }
 }
 

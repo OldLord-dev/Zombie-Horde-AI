@@ -17,6 +17,12 @@ public class MyPhysicsBody : MonoBehaviour
         return ;
     }
 
+    public virtual void NoCollision() {}
+
+    public virtual void AddNeighbor(EnemyBody neighbor) {}
+
+    public virtual void ResetNeighbors() {}
+
 
 }
 

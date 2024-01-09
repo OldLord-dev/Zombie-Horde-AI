@@ -8,33 +8,32 @@ public class FeelerBody : MyPhysicsBody
     public bool detected;
     public Vector2 closestPoint;//najbliższy punkty feelera do ściany!
 
+    private float lengthOffset = 1.0f;
+    private float lengthModifier = 2.0f;
+
+    void Start()
+    {
+        NoCollision();
+    }
+
     public override void  CollisionEffect(MyPhysicsBody otherBody)
     {
         if (otherBody is StaticObstacle obstacle)
         {
-            if(obstacle.c_collider is RectangleCollider rectCollider)
+            if(c_collider is PointCollider && obstacle.c_collider is RectangleCollider rectCollider)
             {
+                
                 (detected, closestPoint) = rectCollider.IntersectingSide(transform.parent.position, transform.position);
-                if (!detected)
-                {
-                    NoCollision();
-                    //Vector2 penetration = closestPoint - transform.position;
-                    //overshoot = penetration.magnitude;
-                }
-                //policzyć Vector2 closestPoint (najbliższy feelerowi)
-                //overshoot = długość(transfomr.position - closestPoint)*normalizacja;
-            }
-            else if (obstacle.c_collider is CircleCollider circleCollider)
-            {
-                //
+                //Debug.Log("collided with wall detected = "+detected+" closestPoint = "+closestPoint.x+","+closestPoint.y);
+                
             }
         }
     }
 
-    public void NoCollision()
+    public override void NoCollision()
     {
-        //closeWall = null;
-        //distanceToCloseWall = float.MaxValue;
-        //overshoot = 0;
+        detected = false;
+        closestPoint = Vector2.positiveInfinity;
     }
+
 }

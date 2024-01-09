@@ -9,16 +9,29 @@ public class EnemyBody : MyPhysicsBody
 
     public Vector3 previous_position;
 
+    public float maxSpeed = 1.5f;
+
+    public float maxForce = 3.0f;
+
+    public List<EnemyBody> neighbors;
+
 
     void Start()
     {
-        velocity = new Vector2(0,0);
+        //velocity = new Vector2(0,0);
+        velocity = new Vector2(1,0);
         previous_position = transform.position;
+        neighbors = new List<EnemyBody>();
     }
 
     void FixedUpdate()
     {
         previous_position = transform.position;
+        if (velocity.magnitude > maxSpeed)
+            {
+                velocity.Normalize();
+                velocity *=  maxSpeed;
+            }
         Vector3 deltaPosition = velocity*Time.deltaTime;
 
         //transform.LookAt(transform.position + deltaPosition);
@@ -40,13 +53,14 @@ public class EnemyBody : MyPhysicsBody
         if (otherBody is StaticObstacle obstacle)
         {
             PushToLastPosition();
+            Stuck();
         }
 
         //jak enemy -> do ostatniej + event
 
         else if (otherBody is EnemyBody enemy)
         {
-            PushToLastPosition();
+            //PushToLastPosition();
             //idk, czy tu się przepychają? czy mogą na siebie nachodzić
         }
 
@@ -63,8 +77,27 @@ public class EnemyBody : MyPhysicsBody
         transform.position = previous_position;
     }
 
-    void ChangeVelocity()
+    public void AddVelocity(Vector2 addVelocity)
     {
-        
+        velocity += addVelocity;
+        if (velocity.magnitude > maxSpeed){
+            velocity.Normalize();
+            velocity *= maxSpeed;
+        }
+    }
+
+    void Stuck()
+    {
+        velocity = Vector2.zero;
+    }
+
+    public override void AddNeighbor(EnemyBody neighbor)
+    {
+        neighbors.Add(neighbor);
+    }
+
+    public override void ResetNeighbors()
+    {
+        neighbors = new List<EnemyBody>();
     }
 }

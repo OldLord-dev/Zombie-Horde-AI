@@ -1,11 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public enum ObstacleType 
-{
-    Wall, Circle
-}
+
 public class StaticObstacle : MyPhysicsBody
 {
-    public ObstacleType type; //set in Unity
+    float distanceFromBoundary = 2.0f;
+
+
+    public (bool, Vector2) GetHidingPosition(Vector2 playerPos)
+    {
+        if (c_collider is CircleCollider circleCollider)
+        {
+            float distanceFromCentre = circleCollider.c_radius +  distanceFromBoundary;
+            Vector2 centre = transform.position;
+            Vector2 hidingPoint = ( centre - playerPos).normalized * distanceFromCentre +centre;
+            return (true, hidingPoint);
+        }
+        else return (false, Vector2.positiveInfinity);
+    }
 }
