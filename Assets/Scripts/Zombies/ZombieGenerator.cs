@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 public class ZombieGenerator : MonoBehaviour
 {
     public GameObject zombiePrefab;
@@ -9,6 +9,8 @@ public class ZombieGenerator : MonoBehaviour
     StaticObstacle[] allObstacles;
     float areaWidth;
     float areaHeight;
+    public UnityEvent zombieDeathEffect;
+
 
 
     void Awake()
@@ -61,7 +63,7 @@ public class ZombieGenerator : MonoBehaviour
             controller.lastSteers.Add(controller.placeholderDirection);
             controller.lastSteers.Add(controller.placeholderDirection);
             zombie.GetComponent<EnemyBody>().previous_position = randomPosition;
-
+            zombie.GetComponent<EnemyBody>().deathEffect = zombieDeathEffect;
             //nadaj losową szybkość
             return true;
         }

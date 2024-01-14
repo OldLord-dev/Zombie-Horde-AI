@@ -8,6 +8,7 @@ TagManager:
   - WallFeeler
   - ObstacleFeeler
   - GameManager
+  - DeathScreen
   layers:
   - Default
   - TransparentFX

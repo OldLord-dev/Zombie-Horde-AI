@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EnemyBody : MyPhysicsBody
 {
@@ -14,6 +15,7 @@ public class EnemyBody : MyPhysicsBody
     public float maxForce = 3.0f;
 
     public List<EnemyBody> neighbors;
+    public UnityEvent deathEffect;
 
 
     void Start()
@@ -60,14 +62,12 @@ public class EnemyBody : MyPhysicsBody
 
         else if (otherBody is EnemyBody enemy)
         {
-            //PushToLastPosition();
-            //idk, czy tu się przepychają? czy mogą na siebie nachodzić
+            
         }
 
         else if (otherBody is PlayerBody player)
         {
-            PushToLastPosition();
-            //idk, czy tu się przepychają? czy mogą na siebie nachodzić
+            deathEffect.Invoke();
         }
     }
 
