@@ -59,6 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_collider: {fileID: 0}
+  distanceFromBoundary: 3
 --- !u!212 &8213263230642366107
 SpriteRenderer:
   m_ObjectHideFlags: 0

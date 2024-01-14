@@ -329,8 +329,8 @@ MonoBehaviour:
   c_collider: {fileID: 0}
   velocity: {x: 0, y: 0}
   previous_position: {x: 0, y: 0, z: 0}
-  maxSpeed: 3
-  maxForce: 1
+  maxSpeed: 4
+  maxForce: 2
   neighbors: []
 --- !u!114 &4495770960554226672
 MonoBehaviour:
@@ -345,11 +345,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mass: 0
-  baseForce: {x: 0, y: 0}
+  lastSteers: []
+  lastSteersWeight: 010000000300000006000000
   transformPoint: {fileID: 0}
   placeholderDirection: {x: 0, y: 0}
   currentPhase: 0
   minGroup: 4
+  phaseTimer: 0
+  nextPhase: 0
+  possiblePhases: 0100000000000000
 --- !u!114 &-2964937303002347713
 MonoBehaviour:
   m_ObjectHideFlags: 0

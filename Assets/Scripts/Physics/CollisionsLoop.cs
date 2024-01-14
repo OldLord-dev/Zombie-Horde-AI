@@ -10,7 +10,7 @@ public class CollisionsLoop : MonoBehaviour
     public List<FeelerBody> allFeelers;
     public List<DetectionBody> allDetectors;
     public List<EnemyBody> allEnemy;
-    public float neighborDistance = 3f;
+    public float neighborDistance = 5f;
 
     void Start()
     {
@@ -114,9 +114,4 @@ public class CollisionsLoop : MonoBehaviour
         }
     }
 
-
-    void TagAllEnemyNeighbors()
-    {
-
-    }
 }

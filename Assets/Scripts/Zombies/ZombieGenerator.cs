@@ -47,7 +47,7 @@ public class ZombieGenerator : MonoBehaviour
             GameObject zombie = Instantiate(zombiePrefab, randomPosition, Quaternion.identity, transform);
             bool check = IsThisSpaceFree(zombie.GetComponent<CircleCollider>());
             int tries = 1;
-            while (!check || tries < 10)
+            while (!check || tries < 50)
             {
                 randomPosition = new Vector2(Random.Range(-areaWidth/2 + 1, areaWidth/2 -1), Random.Range(-areaHeight/2 + 1, areaHeight/2 -1));
                 zombie.transform.position = randomPosition;
@@ -55,9 +55,13 @@ public class ZombieGenerator : MonoBehaviour
                 tries ++;
             }
 
-
-            zombie.GetComponent<ZombieController>().placeholderDirection = new Vector2(Random.Range(-1, 1), Random.Range(-1, 1));
+            ZombieController controller = zombie.GetComponent<ZombieController>();
+            controller.placeholderDirection = new Vector2(Random.Range(-1, 1), Random.Range(-1, 1));
+            controller.lastSteers.Add(controller.placeholderDirection);
+            controller.lastSteers.Add(controller.placeholderDirection);
+            controller.lastSteers.Add(controller.placeholderDirection);
             zombie.GetComponent<EnemyBody>().previous_position = randomPosition;
+
             //nadaj losową szybkość
             return true;
         }

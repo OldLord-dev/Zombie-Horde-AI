@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StaticObstacle : MyPhysicsBody
 {
-    float distanceFromBoundary = 2.0f;
+    public float distanceFromBoundary = 3.0f;
 
 
     public (bool, Vector2) GetHidingPosition(Vector2 playerPos)

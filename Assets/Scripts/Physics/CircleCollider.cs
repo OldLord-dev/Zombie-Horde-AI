@@ -79,6 +79,14 @@ public class CircleCollider: MyCollider
 
             else return (true, intersection2, distance2);
         }
+        
+    }
+
+    public override Vector2 NearestPossiblePosition(Vector2 wannabePosition, EnemyBody agent){
+        Vector2 centre = transform.position;
+        Vector2 direction = (wannabePosition - centre).normalized;
+        float howFar = c_radius + agent.gameObject.GetComponent<CircleCollider>().c_radius;
+        return howFar * direction + centre;
     }
 
 }

@@ -19,7 +19,7 @@ public class EnemyBody : MyPhysicsBody
     void Start()
     {
         //velocity = new Vector2(0,0);
-        velocity = new Vector2(1,0);
+        velocity = Vector2.zero;
         previous_position = transform.position;
         neighbors = new List<EnemyBody>();
     }
@@ -50,10 +50,10 @@ public class EnemyBody : MyPhysicsBody
     public override void  CollisionEffect(MyPhysicsBody otherBody)
     {
         //jak obstacle -> do ostatniej pozycji bez kolizji
+        
         if (otherBody is StaticObstacle obstacle)
         {
-            PushToLastPosition();
-            Stuck();
+            PushToPossiblePosition(obstacle.gameObject.GetComponent<MyCollider>());
         }
 
         //jak enemy -> do ostatniej + event
@@ -71,11 +71,7 @@ public class EnemyBody : MyPhysicsBody
         }
     }
 
-    void PushToLastPosition()
-    {
-        //Debug.Log("Push to previous "+gameObject);
-        transform.position = previous_position;
-    }
+
 
     public void AddVelocity(Vector2 addVelocity)
     {
@@ -99,5 +95,16 @@ public class EnemyBody : MyPhysicsBody
     public override void ResetNeighbors()
     {
         neighbors = new List<EnemyBody>();
+    }
+
+    void PushToLastPosition()
+    {
+        //Debug.Log("Push to previous "+gameObject);
+        transform.position = previous_position;
+    }
+    void PushToPossiblePosition(MyCollider obstacle)
+    {
+        
+        transform.position = obstacle.NearestPossiblePosition(transform.position, this);
     }
 }

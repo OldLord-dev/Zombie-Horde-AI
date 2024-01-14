@@ -226,5 +226,10 @@ public class RectangleCollider: MyCollider
         transform.localScale = new Vector3(x,y,1);
         c_size = new Vector2(transform.localScale.x, transform.localScale.y);
     }
+
+    public override Vector2 NearestPossiblePosition(Vector2 wannabePosition, EnemyBody agent)
+    {
+        return agent.previous_position;
+    }
 }
 

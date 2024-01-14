@@ -8,4 +8,9 @@ public class MyCollider : MonoBehaviour
     {
         return false;
     }
+
+    public virtual Vector2 NearestPossiblePosition(Vector2 wannabePosition, EnemyBody agent)
+    {
+        return Vector2.zero;
+    }
 }
