@@ -10,7 +10,17 @@ public class FeelerBody : MyPhysicsBody
 
     private float lengthOffset = 1.0f;
     private float lengthModifier = 2.0f;
+    public CollisionsLoop collisionsLoop;
+    private void OnEnable()
+    {
+        collisionsLoop = (CollisionsLoop)FindObjectOfType(typeof(CollisionsLoop));
+        collisionsLoop.allFeelers.Add(this);
+    }
 
+    private void OnDisable()
+    {
+        collisionsLoop.allFeelers.Remove(this);
+    }
     void Start()
     {
         NoCollision();

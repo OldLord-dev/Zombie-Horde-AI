@@ -17,6 +17,18 @@ public class EnemyBody : MyPhysicsBody
     public List<EnemyBody> neighbors;
     public UnityEvent deathEffect;
 
+    public CollisionsLoop collisionsLoop;
+    private void OnEnable()
+    {
+        collisionsLoop = (CollisionsLoop)FindObjectOfType(typeof(CollisionsLoop));
+        collisionsLoop.allEnemy.Add(this);
+    }
+
+    private void OnDisable()
+    {
+        RemoveFromNeighbourhoods();
+        collisionsLoop.allEnemy.Remove(this);
+    }
 
     void Start()
     {
@@ -110,5 +122,13 @@ public class EnemyBody : MyPhysicsBody
     {
         
         transform.position = obstacle.NearestPossiblePosition(transform.position, this);
+    }
+
+    public void RemoveFromNeighbourhoods()
+    {
+        foreach (EnemyBody n in neighbors)
+        {
+            n.neighbors.Remove(this);
+        }
     }
 }

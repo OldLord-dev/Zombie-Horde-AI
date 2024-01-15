@@ -289,6 +289,8 @@ public class SteeringBehaviors : MonoBehaviour
         float lookAheadTime = toOffset.magnitude / (cBody.maxSpeed + lBody.velocity.magnitude);
         return Arrive(worldOffsetPos + lBody.velocity * lookAheadTime, Deceleration.Fast);
     }
+
+    
     public Vector2 Hide()
     {
         float bestDistance = Mathf.Infinity;

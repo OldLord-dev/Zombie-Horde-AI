@@ -20,6 +20,15 @@ public class Pool : MonoBehaviour
     void Awake()
     {
         singleton = this;
+        pooledItems = new List<GameObject>();
+        foreach (PoolItem item in items)
+        {
+            for (int i = 0; i < item.amount; i++)
+            {
+                GameObject obj = Instantiate(item.prefab);
+                pooledItems.Add(obj);
+            }
+        }
     }
 
     public GameObject Get(string tag)
@@ -44,17 +53,5 @@ public class Pool : MonoBehaviour
         }
         return null;
     }
-    void Start()
-    {
-        pooledItems = new List<GameObject>();
-        foreach (PoolItem item in items)
-        {
-            for (int i = 0; i < item.amount; i++)
-            {
-                GameObject obj = Instantiate(item.prefab);
-                obj.SetActive(false);
-                pooledItems.Add(obj);
-            }
-        }
-    }
+
 }

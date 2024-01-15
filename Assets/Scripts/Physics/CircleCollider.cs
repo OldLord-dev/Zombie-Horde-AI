@@ -23,6 +23,10 @@ public class CircleCollider: MyCollider
         {
             return rectangleCollider.Overlaps(this);
         }
+        else if (other is PointCollider pointCollider)
+        {
+            return pointCollider.Overlaps(this);
+        }
         return false;
     }
 

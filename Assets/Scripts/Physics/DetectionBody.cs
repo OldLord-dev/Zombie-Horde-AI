@@ -15,7 +15,17 @@ public class DetectionBody : MyPhysicsBody
     public Vector2 lateralForce;
 
     private float lengthOffset = 2.0f;
+    public CollisionsLoop collisionsLoop;
+    private void OnEnable()
+    {
+        collisionsLoop = (CollisionsLoop)FindObjectOfType(typeof(CollisionsLoop));
+        collisionsLoop.allDetectors.Add(this);
+    }
 
+    private void OnDisable()
+    {
+        collisionsLoop.allDetectors.Remove(this);
+    }
     void Start()
     {
         NoCollision();

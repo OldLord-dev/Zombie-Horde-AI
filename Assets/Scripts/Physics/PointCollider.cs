@@ -27,7 +27,7 @@ public class PointCollider : MyCollider
         Vector2 otherCenter = circleCollider.transform.position;
         float circleRadius = circleCollider.c_radius;
         float distance = Vector2.Distance(thisPosition2D, otherCenter);
-
+        //Debug.Log(distance <= circleRadius);
         return distance <= circleRadius;
     }
 

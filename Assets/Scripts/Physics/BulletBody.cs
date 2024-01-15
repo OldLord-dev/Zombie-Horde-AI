@@ -10,16 +10,13 @@ public class BulletBody : MyPhysicsBody
     private Vector3 mousePos;
     private Camera mainCam;
     public float maxSpeed = 1.5f;
+    public CollisionsLoop collisionsLoop;
     private void OnEnable()
     {
+        collisionsLoop = (CollisionsLoop)FindObjectOfType(typeof(CollisionsLoop));
+        collisionsLoop.bullets.Add(this);
         StartCoroutine("Wait2Seconds");
-        mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-        mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 direction = mousePos - transform.position;
-        Vector3 rotation = transform.localPosition - mousePos;
-        velocity = new Vector2(direction.x, direction.y).normalized * force;
-        float rot = Mathf.Atan2(rotation.x, rotation.y) * Mathf.Rad2Deg;
-        transform.localRotation = Quaternion.Euler(0, 0, rot + 90);
+
     }
     void FixedUpdate()
     {
@@ -37,15 +34,15 @@ public class BulletBody : MyPhysicsBody
         //jak obstacle -> do ostatniej pozycji bez kolizji
         if (otherBody is StaticObstacle obstacle)
         {
-            gameObject.SetActive(false);
+            collisionsLoop.SetToDestroy(gameObject);
         }
 
         //jak enemy -> do ostatniej + event
 
         else if (otherBody is EnemyBody enemy)
         {
-            enemy.gameObject.SetActive(false);
-            gameObject.SetActive(false);
+            collisionsLoop.SetToDestroy(enemy.gameObject);
+            collisionsLoop.SetToDestroy(gameObject);
         }
     }
 
@@ -53,5 +50,9 @@ public class BulletBody : MyPhysicsBody
     {
         yield return new WaitForSeconds(2);
         gameObject.SetActive(false);
+    }
+    private void OnDisable()
+    {
+        collisionsLoop.bullets.Remove(this);
     }
 }

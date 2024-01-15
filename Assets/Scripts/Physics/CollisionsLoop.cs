@@ -7,10 +7,11 @@ public class CollisionsLoop : MonoBehaviour
 {
     public StaticObstacle[] allObstacles;
     public PlayerBody onlyPlayer;
-    public List<FeelerBody> allFeelers;
-    public List<DetectionBody> allDetectors;
-    public List<EnemyBody> allEnemy;
-    public List<BulletBody> bullets;
+    public List<FeelerBody> allFeelers= new List<FeelerBody>();
+    public List<DetectionBody> allDetectors= new List<DetectionBody>();
+    public List<EnemyBody> allEnemy= new List<EnemyBody>();
+    public List<BulletBody> bullets = new List<BulletBody>();
+    public List<GameObject> toBeDestroyed = new List<GameObject>();
     public float neighborDistance = 3f;
 
     void Start()
@@ -20,15 +21,12 @@ public class CollisionsLoop : MonoBehaviour
         allFeelers = ((FeelerBody[])FindObjectsOfType(typeof(FeelerBody))).ToList();;
         allDetectors = ((DetectionBody[])FindObjectsOfType(typeof(DetectionBody))).ToList();;
         onlyPlayer = (PlayerBody)FindObjectOfType(typeof(PlayerBody));
-        bullets = ((BulletBody[])FindObjectsOfType(typeof(BulletBody))).ToList();
-        Debug.Log(allObstacles);
-        Debug.Log(allEnemy);
-        Debug.Log(onlyPlayer);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        //Debug.Log(bullets.Count);
         //sprawdzanie kolizji dla gracza
         CheckIfCollidesWithAnyObstacle(onlyPlayer);
         CheckIfCollidesWithOrNearAnyEnemy(onlyPlayer);
@@ -49,12 +47,21 @@ public class CollisionsLoop : MonoBehaviour
             allEnemy[i].ResetNeighbors();
             CheckIfCollidesWithOrNearAnyEnemy(allEnemy[i], i);
 
-            //sprawdzanie czy nie koliduje z pociskami
-            CheckIfCollidesWithBullet(allEnemy[i]);
         }
         //przejdź po wszystkich dynamicznych ciałach
         CheckAllDetections();
+        
+        foreach (BulletBody bullet in bullets)
+        {
+            CheckIfCollidesWithAnyObstacle(bullet);
+            CheckIfCollidesWithOrNearAnyEnemy(bullet);
+            //Debug.Log("Checking bullet collision");
+
+        }
+        Destruction();
+
     }
+    /*
     void CheckIfCollidesWithBullet(MyPhysicsBody body)
     {
         foreach (MyPhysicsBody b in bullets)
@@ -66,6 +73,7 @@ public class CollisionsLoop : MonoBehaviour
             }
         }
     }
+    */
     void CheckIfCollidesWithAnyObstacle(MyPhysicsBody body)
     {
         foreach (MyPhysicsBody obstacle in allObstacles)
@@ -126,6 +134,20 @@ public class CollisionsLoop : MonoBehaviour
         {
             feeler.Recaliber();
             CheckIfCollidesWithAnyObstacle(feeler);
+        }
+    }
+
+    public void SetToDestroy(GameObject anybody)
+    {
+        toBeDestroyed.Add(anybody);
+    }
+    void Destruction()
+    {
+        while (toBeDestroyed.Count >0 )
+        {
+            GameObject anybody = toBeDestroyed[0];
+            toBeDestroyed.RemoveAt(0);
+            anybody.SetActive(false);
         }
     }
     
