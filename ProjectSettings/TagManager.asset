@@ -9,6 +9,7 @@ TagManager:
   - ObstacleFeeler
   - GameManager
   - DeathScreen
+  - Bullet
   layers:
   - Default
   - TransparentFX

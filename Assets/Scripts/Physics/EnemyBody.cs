@@ -65,6 +65,10 @@ public class EnemyBody : MyPhysicsBody
             
         }
 
+        else if(otherBody is BulletBody bullet)
+        {
+            gameObject.SetActive(false);
+        }
         else if (otherBody is PlayerBody player)
         {
             deathEffect.Invoke();

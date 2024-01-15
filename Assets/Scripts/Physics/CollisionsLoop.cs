@@ -10,6 +10,7 @@ public class CollisionsLoop : MonoBehaviour
     public List<FeelerBody> allFeelers;
     public List<DetectionBody> allDetectors;
     public List<EnemyBody> allEnemy;
+    public List<BulletBody> bullets;
     public float neighborDistance = 3f;
 
     void Start()
@@ -19,6 +20,7 @@ public class CollisionsLoop : MonoBehaviour
         allFeelers = ((FeelerBody[])FindObjectsOfType(typeof(FeelerBody))).ToList();;
         allDetectors = ((DetectionBody[])FindObjectsOfType(typeof(DetectionBody))).ToList();;
         onlyPlayer = (PlayerBody)FindObjectOfType(typeof(PlayerBody));
+        bullets = ((BulletBody[])FindObjectsOfType(typeof(BulletBody))).ToList();
         Debug.Log(allObstacles);
         Debug.Log(allEnemy);
         Debug.Log(onlyPlayer);
@@ -46,11 +48,24 @@ public class CollisionsLoop : MonoBehaviour
 
             allEnemy[i].ResetNeighbors();
             CheckIfCollidesWithOrNearAnyEnemy(allEnemy[i], i);
+
+            //sprawdzanie czy nie koliduje z pociskami
+            CheckIfCollidesWithBullet(allEnemy[i]);
         }
         //przejdź po wszystkich dynamicznych ciałach
         CheckAllDetections();
     }
-
+    void CheckIfCollidesWithBullet(MyPhysicsBody body)
+    {
+        foreach (MyPhysicsBody b in bullets)
+        {
+            if (b.c_collider.Overlaps(body.c_collider))
+            {
+                body.CollisionEffect(b);
+                Debug.Log("Somebody " + body + " collided with " + b);
+            }
+        }
+    }
     void CheckIfCollidesWithAnyObstacle(MyPhysicsBody body)
     {
         foreach (MyPhysicsBody obstacle in allObstacles)
